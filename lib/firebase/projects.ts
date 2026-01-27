@@ -26,8 +26,16 @@ export const createProject = async (
   projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<string> => {
   try {
+    // Remove undefined fields before saving to Firestore
+    const cleanData: any = {};
+    Object.entries(projectData).forEach(([key, value]) => {
+      if (value !== undefined) {
+        cleanData[key] = value;
+      }
+    });
+    
     const docRef = await addDoc(collection(db, PROJECTS_COLLECTION), {
-      ...projectData,
+      ...cleanData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -123,9 +131,17 @@ export const updateProject = async (
   projectData: Partial<Omit<Project, 'id' | 'createdAt' | 'updatedAt'>>
 ): Promise<void> => {
   try {
+    // Remove undefined fields before updating
+    const cleanData: any = {};
+    Object.entries(projectData).forEach(([key, value]) => {
+      if (value !== undefined) {
+        cleanData[key] = value;
+      }
+    });
+    
     const docRef = doc(db, PROJECTS_COLLECTION, projectId);
     await updateDoc(docRef, {
-      ...projectData,
+      ...cleanData,
       updatedAt: serverTimestamp(),
     });
   } catch (error) {

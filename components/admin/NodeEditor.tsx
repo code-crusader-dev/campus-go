@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit, Trash2, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Save, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -20,6 +20,60 @@ interface NodeEditorProps {
   startNodeId?: string;
 }
 
+// Image preloader utility
+const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = reject;
+    img.src = src;
+  });
+};
+
+// Hook to preload connected node images
+const useImagePreloader = (nodes: Node[], currentNodeId: string | null) => {
+  useEffect(() => {
+    if (!currentNodeId) return;
+
+    const currentNode = nodes.find(n => n.id === currentNodeId);
+    if (!currentNode) return;
+
+    // Get all connected node IDs
+    const connectedNodeIds = Object.values(currentNode.connections).filter(Boolean);
+    
+    // Preload images for all connected nodes
+    const preloadPromises = connectedNodeIds.map(nodeId => {
+      const node = nodes.find(n => n.id === nodeId);
+      if (node?.image) {
+        return preloadImage(node.image);
+      }
+      return Promise.resolve();
+    });
+
+    // Preload in background
+    Promise.all(preloadPromises).catch(err => {
+      console.warn('Failed to preload some images:', err);
+    });
+  }, [currentNodeId, nodes]);
+};
+
+// Preload all images on component mount for better UX
+const usePreloadAllImages = (nodes: Node[]) => {
+  useEffect(() => {
+    // Preload all node images in the background
+    const preloadPromises = nodes.map(node => {
+      if (node.image) {
+        return preloadImage(node.image);
+      }
+      return Promise.resolve();
+    });
+
+    Promise.all(preloadPromises).catch(err => {
+      console.warn('Failed to preload all images:', err);
+    });
+  }, [nodes]);
+};
+
 export const NodeEditor: React.FC<NodeEditorProps> = ({
   nodes,
   projectId,
@@ -32,6 +86,10 @@ export const NodeEditor: React.FC<NodeEditorProps> = ({
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [connectingFrom, setConnectingFrom] = useState<{ nodeId: string; direction: Direction } | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  // Preload images for better performance
+  useImagePreloader(nodes, selectedNode);
+  usePreloadAllImages(nodes);
 
   // Node form state
   const [nodeForm, setNodeForm] = useState<{
@@ -288,6 +346,7 @@ export const NodeEditor: React.FC<NodeEditorProps> = ({
                       src={node.image}
                       alt={node.title || 'Node'}
                       className="w-full h-full object-cover"
+                      loading="eager"
                     />
                     {isStartNode && (
                       <div className="absolute top-2 left-2 px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded">
@@ -425,6 +484,9 @@ export const NodeEditor: React.FC<NodeEditorProps> = ({
           </div>
         </div>
       </Modal>
+    </div>
+  );
+};
     </div>
   );
 };

@@ -86,46 +86,90 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ project, isEdit = fals
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate() || !user) return;
+    if (!validate() || !user) {
+      console.log('Validation failed or user not logged in');
+      return;
+    }
 
     try {
       setLoading(true);
+      console.log('Starting project save...');
 
       // Upload cover image if it's a file
       let coverImageUrl = typeof coverImage === 'string' ? coverImage : '';
       if (coverImage instanceof File) {
+        console.log('Uploading cover image...');
         const tempId = isEdit && project ? project.id : Date.now().toString();
-        coverImageUrl = await uploadProjectCover(coverImage, tempId);
+        try {
+          coverImageUrl = await uploadProjectCover(coverImage, tempId);
+          console.log('Cover image uploaded successfully:', coverImageUrl);
+        } catch (uploadError) {
+          console.error('Cover image upload failed:', uploadError);
+          throw new Error('Failed to upload cover image. Please check Firebase Storage is enabled and configured correctly.');
+        }
+      } else if (!coverImageUrl) {
+        throw new Error('Cover image is required');
       }
 
       const projectData = {
-        title: formData.title,
-        description: formData.description,
+        title: formData.title.trim(),
+        description: formData.description.trim(),
         coverImage: coverImageUrl,
         theme,
         contentType: formData.contentType,
-        externalUrl: formData.contentType === 'external' ? formData.externalUrl : undefined,
+        externalUrl: formData.contentType === 'external' ? formData.externalUrl.trim() : undefined,
         nodes: formData.contentType === 'nodes' ? (project?.nodes || []) : undefined,
         startNodeId: project?.startNodeId,
         createdBy: user.id,
       };
 
+      console.log('Project data prepared:', { ...projectData, coverImage: 'URL' });
+
       if (isEdit && project) {
+        console.log('Updating existing project...');
         await updateProject(project.id, projectData);
+        console.log('Project updated successfully');
+        alert('Project updated successfully!');
         router.push('/admin');
       } else {
+        console.log('Creating new project...');
         const projectId = await createProject(projectData);
+        console.log('Project created successfully with ID:', projectId);
         
         if (formData.contentType === 'nodes') {
           // Redirect to node editor
           router.push(`/admin/project/${projectId}/nodes`);
         } else {
+          alert('Project created successfully!');
           router.push('/admin');
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving project:', error);
-      alert('Failed to save project. Please try again.');
+      
+      // More detailed error messages
+      let errorMessage = 'Failed to save project. ';
+      
+      if (error.code === 'permission-denied') {
+        errorMessage += 'Permission denied. Please check:\n' +
+          '1. You are signed in\n' +
+          '2. Your email is in the admin list\n' +
+          '3. Firestore security rules are configured correctly';
+      } else if (error.code === 'unauthenticated') {
+        errorMessage += 'You are not authenticated. Please sign in again.';
+      } else if (error.message?.includes('storage')) {
+        errorMessage += 'Image upload failed. Please check Firebase Storage is enabled.';
+      } else if (error.message) {
+        errorMessage += error.message;
+      } else {
+        errorMessage += 'Please check:\n' +
+          '1. Firebase is configured correctly (.env.local)\n' +
+          '2. Internet connection is stable\n' +
+          '3. Firestore and Storage are enabled in Firebase Console\n' +
+          '4. Check browser console for detailed error';
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

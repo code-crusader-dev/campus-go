@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, ExternalLink, Grid } from 'lucide-react';
+import { Plus, Edit, Trash2, ExternalLink, Grid, Activity } from 'lucide-react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Loading } from '@/components/ui/Loading';
 import { Modal } from '@/components/ui/Modal';
+import { DiagnosticsButton } from '@/components/admin/DiagnosticsButton';
 import { useAuthStore } from '@/lib/store/authStore';
 import { getAllProjects, deleteProject } from '@/lib/firebase/projects';
 import { Project } from '@/types';
@@ -73,13 +74,16 @@ function AdminDashboard() {
               Manage your campus exploration projects
             </p>
           </div>
-          <Button
-            onClick={() => router.push('/admin/project/new')}
-            size="lg"
-          >
-            <Plus className="w-5 h-5" />
-            Create Project
-          </Button>
+          <div className="flex gap-3">
+            <DiagnosticsButton />
+            <Button
+              onClick={() => router.push('/admin/project/new')}
+              size="lg"
+            >
+              <Plus className="w-5 h-5" />
+              Create Project
+            </Button>
+          </div>
         </div>
       </motion.div>
 

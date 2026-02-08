@@ -1,7 +1,7 @@
 // Theme state management using Zustand
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { ThemeMode } from '@/types';
 
 interface ThemeState {
@@ -23,6 +23,11 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'campus-go-theme',
+      storage: createJSONStorage(() => typeof window !== 'undefined' ? localStorage : {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+      } as any),
     }
   )
 );

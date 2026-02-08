@@ -24,6 +24,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ projectId }) => 
 
   useEffect(() => {
     loadComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
   const loadComments = async () => {

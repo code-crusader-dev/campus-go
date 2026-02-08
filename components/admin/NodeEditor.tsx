@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Plus, Edit, Trash2, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Save, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -284,9 +285,11 @@ export const NodeEditor: React.FC<NodeEditorProps> = ({
                 >
                   {/* Node image */}
                   <div className="relative h-48 bg-gray-200 dark:bg-gray-800">
-                    <img
+                    <Image
                       src={node.image}
                       alt={node.title || 'Node'}
+                      width={400}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                     {isStartNode && (

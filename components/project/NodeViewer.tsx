@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Home, X } from 'lucide-react';
 import { Node, Direction } from '@/types';
 import { Button } from '@/components/ui/Button';
@@ -77,10 +78,12 @@ export const NodeViewer: React.FC<NodeViewerProps> = ({ nodes, startNodeId, onCl
           exit={{ opacity: 0, scale: direction ? 0.9 : 1.1 }}
           transition={{ duration: 0.5 }}
         >
-          <img
+          <Image
             src={currentNode.image}
             alt={currentNode.title || 'Node view'}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
           />
           {/* Overlay for better button visibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30" />

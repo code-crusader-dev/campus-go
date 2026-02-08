@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { ExternalLink, ArrowLeft, Calendar, User } from 'lucide-react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { NodeViewer } from '@/components/project/NodeViewer';
@@ -37,6 +38,16 @@ function ProjectPage() {
     loadProject();
   }, [projectId]);
 
+  // Handle external link projects - must be before early returns
+  useEffect(() => {
+    if (project && project.contentType === 'external' && project.externalUrl) {
+      // Open external link in a new tab so users can come back
+      window.open(project.externalUrl, '_blank', 'noopener,noreferrer');
+      // Navigate back to home after opening the link
+      router.push('/');
+    }
+  }, [project, router]);
+
   if (loading) {
     return <Loading fullScreen text="Loading project..." />;
   }
@@ -49,7 +60,7 @@ function ProjectPage() {
             Project not found
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The project you're looking for doesn't exist.
+            The project you&apos;re looking for doesn&apos;t exist.
           </p>
           <Button onClick={() => router.push('/')}>
             <ArrowLeft className="w-4 h-4" />
@@ -58,12 +69,6 @@ function ProjectPage() {
         </div>
       </div>
     );
-  }
-
-  // Handle external link projects
-  if (project.contentType === 'external' && project.externalUrl) {
-    window.location.href = project.externalUrl;
-    return <Loading fullScreen text="Redirecting..." />;
   }
 
   // Handle node-based projects
@@ -81,10 +86,12 @@ function ProjectPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Hero section */}
       <div className="relative h-[50vh] min-h-[400px]">
-        <img
+        <Image
           src={project.coverImage}
           alt={project.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         
@@ -165,12 +172,13 @@ function ProjectPage() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="aspect-video rounded-lg overflow-hidden shadow-lg"
+                  className="aspect-video rounded-lg overflow-hidden shadow-lg relative"
                 >
-                  <img
+                  <Image
                     src={node.image}
                     alt={node.title || `Node ${index + 1}`}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    fill
+                    className="object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </motion.div>
               ))}

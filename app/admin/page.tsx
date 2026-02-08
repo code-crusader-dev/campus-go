@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Plus, Edit, Trash2, ExternalLink, Grid, Activity } from 'lucide-react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
@@ -174,9 +175,11 @@ function AdminDashboard() {
                   <div className="flex items-start gap-4">
                     {/* Cover image */}
                     <div className="w-32 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800">
-                      <img
+                      <Image
                         src={project.coverImage}
                         alt={project.title}
+                        width={128}
+                        height={96}
                         className="w-full h-full object-cover"
                       />
                     </div>

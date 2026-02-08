@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Moon, Sun, LogOut, LayoutDashboard, User } from 'lucide-react';
 import { Logo } from './Logo';
@@ -77,10 +78,12 @@ export const Header: React.FC = () => {
             <div className="flex items-center gap-2 ml-2">
               <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800">
                 {user.photoURL ? (
-                  <img
+                  <Image
                     src={user.photoURL}
-                    alt={user.displayName}
-                    className="w-6 h-6 rounded-full"
+                    alt={user.displayName || 'User'}
+                    width={24}
+                    height={24}
+                    className="rounded-full"
                   />
                 ) : (
                   <User className="w-5 h-5 text-gray-600 dark:text-gray-300" />

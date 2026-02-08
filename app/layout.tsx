@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Force dynamic rendering to avoid SSR issues with Firebase and Zustand
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: {

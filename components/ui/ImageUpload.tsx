@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
 import { Upload, Link as LinkIcon, Camera, X, Loader2 } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
@@ -86,15 +87,16 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
       {/* Preview */}
       {preview && (
-        <div className="relative mb-4 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700">
-          <img
+        <div className="relative mb-4 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-700 h-48">
+          <Image
             src={preview}
             alt="Preview"
-            className="w-full h-48 object-cover"
+            fill
+            className="object-cover"
           />
           <button
             onClick={clearImage}
-            className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 rounded-full text-white transition-colors"
+            className="absolute top-2 right-2 p-2 bg-red-600 hover:bg-red-700 rounded-full text-white transition-colors z-10"
           >
             <X className="w-4 h-4" />
           </button>

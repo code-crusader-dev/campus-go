@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Search, ExternalLink, MapPin } from 'lucide-react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProjects } from '@/lib/hooks/useProjects';
@@ -116,9 +117,11 @@ export default function HomePage() {
               >
                 {/* Cover image */}
                 <div className="relative h-48 bg-gray-200 dark:bg-gray-800">
-                  <img
+                  <Image
                     src={project.coverImage}
                     alt={project.title}
+                    width={400}
+                    height={192}
                     className="w-full h-full object-cover"
                   />
                   {project.contentType === 'external' && (

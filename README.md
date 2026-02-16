@@ -9,7 +9,7 @@ A modern campus exploration platform with node-based navigation, similar to Goog
 
 ## 🌐 Live Demo
 
-🔗 https://rnnfgfr5-3000.inc1.devtunnels.ms/
+🔗 https://campus-go-sf2g.vercel.app/
 
 ## ✨ Features
 

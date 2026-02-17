@@ -17,6 +17,40 @@ export const metadata: Metadata = {
   },
 };
 
+export const metadata: Metadata = {
+  title: 'Campus Go - Explore Your Campus',
+  description:
+    'Campus exploration platform with node-based navigation. Discover buildings, locations, and hidden gems on your campus.',
+  keywords: ['campus','navigation','exploration','street view','university','college'],
+  authors: [{ name: 'Campus Go Team' }],
+
+  openGraph: {
+    title: 'Campus Go - Explore Your Campus',
+    description:
+      'Campus exploration platform with node-based navigation',
+    url: 'https://campus-go-sf2g.vercel.app',
+    siteName: 'Campus Go',
+    type: 'website',
+    images: [
+      {
+        url: 'https://campus-go-sf2g.vercel.app/og-image.png', // Put image in /public
+        width: 1200,
+        height: 630,
+        alt: 'Campus Go Platform Preview',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Campus Go - Explore Your Campus',
+    description:
+      'Campus exploration platform with node-based navigation',
+    images: ['https://campus-go-sf2g.vercel.app/og-image.png'],
+  },
+};
+
+
 // Force dynamic rendering to avoid SSR issues with Firebase and Zustand
 export const dynamic = 'force-dynamic';
 

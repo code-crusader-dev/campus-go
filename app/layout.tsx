@@ -5,17 +5,17 @@ import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Campus Go - Explore Your Campus',
-  description: 'Campus exploration platform with node-based navigation. Discover buildings, locations, and hidden gems on your campus.',
-  keywords: ['campus', 'navigation', 'exploration', 'street view', 'university', 'college'],
-  authors: [{ name: 'Campus Go Team' }],
-  openGraph: {
-    title: 'Campus Go - Explore Your Campus',
-    description: 'Campus exploration platform with node-based navigation',
-    type: 'website',
-  },
-};
+// export const metadata: Metadata = {
+//   title: 'Campus Go - Explore Your Campus',
+//   description: 'Campus exploration platform with node-based navigation. Discover buildings, locations, and hidden gems on your campus.',
+//   keywords: ['campus', 'navigation', 'exploration', 'street view', 'university', 'college'],
+//   authors: [{ name: 'Campus Go Team' }],
+//   openGraph: {
+//     title: 'Campus Go - Explore Your Campus',
+//     description: 'Campus exploration platform with node-based navigation',
+//     type: 'website',
+//   },
+// };
 
 export const metadata: Metadata = {
   title: 'Campus Go - Explore Your Campus',

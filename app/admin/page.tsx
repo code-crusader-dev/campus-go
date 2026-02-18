@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Loading } from '@/components/ui/Loading';
 import { Modal } from '@/components/ui/Modal';
-import { DiagnosticsButton } from '@/components/admin/DiagnosticsButton';
 import { useAuthStore } from '@/lib/store/authStore';
 import { getAllProjects, deleteProject } from '@/lib/firebase/projects';
 import { Project } from '@/types';
@@ -76,7 +75,6 @@ function AdminDashboard() {
             </p>
           </div>
           <div className="flex gap-3">
-            <DiagnosticsButton />
             <Button
               onClick={() => router.push('/admin/project/new')}
               size="lg"

@@ -5,7 +5,24 @@ import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
+<<<<<<< HEAD
 export const metadata: Metadata = {
+=======
+// export const metadata: Metadata = {
+//   title: 'Campus Go - Explore Your Campus',
+//   description: 'Campus exploration platform with node-based navigation. Discover buildings, locations, and hidden gems on your campus.',
+//   keywords: ['campus', 'navigation', 'exploration', 'street view', 'university', 'college'],
+//   authors: [{ name: 'Campus Go Team' }],
+//   openGraph: {
+//     title: 'Campus Go - Explore Your Campus',
+//     description: 'Campus exploration platform with node-based navigation',
+//     type: 'website',
+//   },
+// };
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://campus-go-sf2g.vercel.app'),
+>>>>>>> 4242acea7f493ca6d32e7087d975fdfe2fc911ca
   title: 'Campus Go - Explore Your Campus',
   description:
     'Campus exploration platform with node-based navigation. Discover buildings, locations, and hidden gems on your campus.',
@@ -21,7 +38,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://campus-go-sf2g.vercel.app/og-image.png', // Put image in /public
+        url: '/og-image.png', // Relative to metadataBase
         width: 1200,
         height: 630,
         alt: 'Campus Go Platform Preview',
@@ -34,7 +51,7 @@ export const metadata: Metadata = {
     title: 'Campus Go - Explore Your Campus',
     description:
       'Campus exploration platform with node-based navigation',
-    images: ['https://campus-go-sf2g.vercel.app/og-image.png'],
+    images: ['/og-image.png'], // Relative to metadataBase
   },
 };
 

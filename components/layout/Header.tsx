@@ -9,6 +9,7 @@ import { Logo } from './Logo';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useThemeStore } from '@/lib/store/themeStore';
 import { signOut } from '@/lib/firebase/auth';
+import { AuthButton } from '@/components/auth/AuthButton';
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -74,7 +75,7 @@ export const Header: React.FC = () => {
           </button>
 
           {/* User menu */}
-          {isAuthenticated && user && (
+          {isAuthenticated && user ? (
             <div className="flex items-center gap-2 ml-2">
               <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-800">
                 {user.photoURL ? (
@@ -105,6 +106,10 @@ export const Header: React.FC = () => {
               >
                 <LogOut className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400" />
               </button>
+            </div>
+          ) : (
+            <div className="ml-2">
+              <AuthButton compact />
             </div>
           )}
         </div>

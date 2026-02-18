@@ -5,7 +5,11 @@ import { LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { signInWithGoogle } from '@/lib/firebase/auth';
 
-export const AuthButton: React.FC = () => {
+interface AuthButtonProps {
+  compact?: boolean;
+}
+
+export const AuthButton: React.FC<AuthButtonProps> = ({ compact = false }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,6 +25,20 @@ export const AuthButton: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (compact) {
+    return (
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={handleSignIn}
+        loading={loading}
+      >
+        <LogIn className="w-4 h-4" />
+        Sign In
+      </Button>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center gap-2">

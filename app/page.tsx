@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Search, ExternalLink, MapPin } from 'lucide-react';
-import { useAuth } from '@/lib/hooks/useAuth';
 import { useProjects } from '@/lib/hooks/useProjects';
-import { AuthButton } from '@/components/auth/AuthButton';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Loading } from '@/components/ui/Loading';
@@ -14,37 +12,9 @@ import { useRouter } from 'next/navigation';
 import { truncateText } from '@/lib/utils/helpers';
 
 export default function HomePage() {
-  const { isAuthenticated, loading: authLoading } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const { projects, loading: projectsLoading } = useProjects(searchTerm);
   const router = useRouter();
-
-  if (authLoading) {
-    return <Loading fullScreen />;
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        <div className="text-center px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-              Welcome to Campus Go
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-              Explore your campus like never before. Navigate through buildings and locations
-              with our immersive node-based system.
-            </p>
-            <AuthButton />
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
